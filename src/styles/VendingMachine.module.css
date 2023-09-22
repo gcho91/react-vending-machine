@@ -1,14 +1,17 @@
+/* 
+:root {
+    --pocari-blue: #364AFD;
+    -- pocari-light-blue: #C3C0FE;
+    --pocari-sky-blue: #B6DFFF;
+} */
+
 .main {
     background-color: salmon;
 }
 
 .machineContainer {
-    /* display: flex;
-    flex-wrap: wrap;
-    width: 60%;
-    margin: 0 auto; */
 
-    background-color: aqua;
+    background-color: #364AFD;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
@@ -21,16 +24,18 @@
 }
 
 .item {
-    /* flex: 0 0 33%; */
 
     width: 100%;
     /* height: 0%; */
-        background-color: aquamarine;
+        background-color: #B6DFFF;
         border: 1px solid yellow;
         border-radius: 15px;
 
 }
 
+.item:last-child {
+    grid-column: span 3;
+}
 
 .imageContainer {
     display: flex;

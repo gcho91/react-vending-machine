@@ -32,56 +32,80 @@ let drinks: Drink[] = [
     {
         name: "cream soda",
         price: 10
-    },
+    }
 
 ]
 
 export default function VendingMachine() {
 
-    let [totalWalletAmount, setTotalWalletAmount] = useState(10)
+    let [totalWalletAmount, setTotalWalletAmount] = useState(20)
+    let [totalInserted, setTotalInserted] = useState(0)
+    let [change, setChange] = useState(0)
     let [purchased, setPurchased] = useState<Drink[]>([]);
 
-    console.log(purchased, 'p')
+
+    const handleInsertMoney = (amountInserted: number) => {
+        if (totalWalletAmount < 10) {
+            alert('you dont have 10 dollars')
+            console.log('you dont have 10 dollars')
+        } else {
+            setTotalInserted(totalInserted + amountInserted)
+            setTotalWalletAmount(totalWalletAmount - amountInserted)
+        }
+    }
 
     const handleBuy = (name: string, price: number) => {
-        // error if not enough money
-        // if neough money, buy and return change
-        console.log('clicking buy', name, price)
-        console.log(totalWalletAmount, 'total money')
-        if (totalWalletAmount < price) {
+
+        if (totalInserted < price) {
             console.log('i dont have enough money!')
             alert('not enough money')
         } else {
-            setTotalWalletAmount(totalWalletAmount - price)
+            // setTotalWalletAmount(totalInserted - price)
+            setTotalInserted(totalInserted - price)
             setPurchased(purchased => [...purchased, drinks[0]])
+        }
+    }
+
+    const returnChange = () => {
+        if (totalInserted == 0) {
+            alert('there is no change to dispense')
+            console.log('no change')
+        } else {
+            setTotalWalletAmount(totalWalletAmount += totalInserted)
+            setTotalInserted(0);
         }
     }
 
     return (
         <div>
             <h1>its a vending machine</h1>
-            <p>You have:  ${totalWalletAmount} </p>
+            <p>You have:  ${totalWalletAmount} in your wallet </p>
+            <p>Machine has ${totalInserted}</p>
+            <p>Insert $10: <button onClick={() => handleInsertMoney(10)}>Insert $10</button></p>
 
+            <button onClick={returnChange}>I want my change!</button>
             <p>Purchased Items: {purchased.map((item, index) => <li key={index}>{item.name}</li>)}</p>
 
             <div className={styles.machineContainer}>
                 {drinks.map(drink => {
                     return <div key={drink.name} className={styles.item}>
                         <div className={styles.imageContainer}>
-
                             <Image
                                 alt="soda can illustration"
                                 width={30}
                                 height={40}
-                                // fill={true}
                                 src={soda}
                             />
                         </div>
                         <p>{drink.name}</p>
                         <button onClick={() => handleBuy(drink.name, drink.price)}>${drink.price}</button>
-                        {/* <p>test</p> */}
                     </div>
                 })}
+                <div className={styles.item}>
+                    <div className={styles.imageContainer}>
+                        <p>inventory placeholder</p>
+                    </div>
+                </div>
             </div>
         </div>
     )
